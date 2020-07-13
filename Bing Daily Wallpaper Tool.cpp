@@ -1,3 +1,5 @@
+// Copyright (C) 2020 Mayank Mathur (Mynk-9)
+
 #include <iostream>
 #include <fstream>
 #include <string>
