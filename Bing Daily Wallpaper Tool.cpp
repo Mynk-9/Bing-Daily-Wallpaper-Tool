@@ -84,7 +84,11 @@ int main()
 
     // the final step
     if (setDesktopBackground(imageFilePath))
-        std::cout << "Successfully added as wallpaper.\n";
+    {
+        std::cout << "Successfully added as wallpaper.\n\n"
+                  << "\tCode can be found at mynk-9@github\n"
+                  << "\tCopyright (c) 2020 Mayank Mathur (MIT License)\n";
+    }
     else
         std::cout << "There was some error in setting the wallpaper.\n";
 
