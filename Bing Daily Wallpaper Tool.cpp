@@ -6,7 +6,6 @@
 
 #include <windows.h>
 #include <libloaderapi.h>
-#include <tchar.h>
 
 namespace fs = std::filesystem;
 
