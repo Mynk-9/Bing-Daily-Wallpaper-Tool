@@ -93,6 +93,12 @@ int main()
     else
         std::cout << "There was some error in setting the wallpaper.\n";
 
+    // Deletions added to solve a bug where the download function
+    // would try to load the image from cache and not update current day's image.
+    // And it solved another purpose to clear up the clutter.
+    DeleteFileA(xmlFilePath);
+    DeleteFileA(imageFilePath);
+
     std::cout << "Press any key to continue." << std::endl;
     getchar();
 
