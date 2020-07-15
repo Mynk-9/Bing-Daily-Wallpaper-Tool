@@ -41,8 +41,10 @@ bool downloadToFile(char url[], char filePath[])
 
 inline void stringToCharArray(std::string s, char x[])
 {
-    for (int i = 0; i < s.size(); ++i)
+    int i;
+    for (i = 0; i < s.size(); ++i)
         x[i] = s[i];
+    x[i] = '\0';
 }
 
 int main()
@@ -56,8 +58,8 @@ int main()
     std::string _imageFilePath = fs::current_path().string() + "\\todaysbingimage.jpg";
 
     char xmlDataUrl[] = "https://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1&mkt=en-US";
-    char xmlFilePath[_xmlFilePath.size()];
-    char imageFilePath[_imageFilePath.size()];
+    char xmlFilePath[_xmlFilePath.size() + 1];
+    char imageFilePath[_imageFilePath.size() + 1];
 
     stringToCharArray(_xmlFilePath, xmlFilePath);
     stringToCharArray(_imageFilePath, imageFilePath);
@@ -73,6 +75,7 @@ int main()
     std::ifstream fin(xmlFilePath);
     while (fin >> tmp)
         data += tmp;
+    fin.close();
     std::size_t urlMarkers[2] = {data.find("<url>"), data.find("</url>")};
     for (int i = urlMarkers[0] + 5; i < urlMarkers[1]; ++i)
         imageUrl += data[i];
@@ -82,6 +85,11 @@ int main()
         std::cout << "Error at Today's Image download." << std::endl;
         return 0;
     }
+
+    // Deletions added to solve a bug where the download function
+    // would try to load the image from cache and not update current day's image.
+    // And it solved another purpose to clear up the clutter.
+    DeleteFileA(_xmlFilePath.c_str());
 
     // the final step
     if (setDesktopBackground(imageFilePath))
@@ -93,14 +101,13 @@ int main()
     else
         std::cout << "There was some error in setting the wallpaper.\n";
 
+    std::cout << "Press any key to continue." << std::endl;
+    getchar();
+
     // Deletions added to solve a bug where the download function
     // would try to load the image from cache and not update current day's image.
     // And it solved another purpose to clear up the clutter.
-    DeleteFileA(xmlFilePath);
-    DeleteFileA(imageFilePath);
-
-    std::cout << "Press any key to continue." << std::endl;
-    getchar();
+    DeleteFileA(_imageFilePath.c_str());
 
     return 0;
 }
